@@ -1,0 +1,15 @@
+# Render Blueprint — auto-imported when you create a new web service from this repo.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: mobile-welding
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 60
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.12.0"

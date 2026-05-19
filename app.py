@@ -528,11 +528,10 @@ def not_found(e):
 
 
 # ---------- boot ----------
+# Initialise DB on import so gunicorn / WSGI servers also seed correctly.
+db.init_db()
 
 if __name__ == '__main__':
-    if not os.path.exists(db.DB_PATH):
-        print('[init] creating database & seeding sample data…')
-    db.init_db()
     port = int(os.environ.get('PORT', 5000))
     print(f'\n  Site running:  http://127.0.0.1:{port}\n  Admin login:   http://127.0.0.1:{port}/admin/login   (admin / admin123)\n')
     app.run(host='0.0.0.0', port=port, debug=True)

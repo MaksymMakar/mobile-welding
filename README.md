@@ -90,15 +90,32 @@ welding/
         └── settings.html
 ```
 
-## Going to production
+## Deploy to Render (free)
 
-The bundled `python app.py` runs Flask's dev server — fine for local use, not
-for production. Before deploying:
+The repo includes `render.yaml`, which Render reads to auto-configure
+everything. To deploy:
 
-1. Set `SECRET_KEY` env var to a long random string
-2. Run behind a real WSGI server: `waitress-serve --port=8080 app:app`
-3. Put it behind nginx / Caddy with HTTPS
-4. Take a backup of `welding.db` and `static/uploads/`
+1. Go to <https://render.com/> and sign up (GitHub OAuth works)
+2. Dashboard → **New +** → **Blueprint**
+3. Connect this GitHub repo
+4. Render reads `render.yaml`, sets build + start commands automatically
+5. Click **Apply** — first deploy takes ~3 min
+6. You get a URL like `https://mobile-welding.onrender.com`
+
+**Heads up about free-tier data:** Render's free disk is ephemeral, so
+`welding.db` and uploaded gallery images get wiped each time the service
+redeploys. Fine for showing off the site; for a live business, attach a
+persistent disk in the Render dashboard (~$1/mo) or switch the DB to
+Render's free Postgres tier. The first request after 15 min of inactivity
+also cold-starts (~30 sec) on free tier.
+
+## Going to production (more serious)
+
+1. Set a strong `SECRET_KEY` env var
+2. Change the default admin password (do this *first*, every time)
+3. Use a persistent disk or Postgres so data survives redeploys
+4. Take backups of `welding.db` and `static/uploads/`
+5. Add a custom domain in Render (free + auto HTTPS)
 
 ## Customising fonts
 
