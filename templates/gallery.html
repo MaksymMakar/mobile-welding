@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Gallery · {{ settings.business_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Portfolio</span>
+    <h1>Gallery</h1>
+    <p class="muted" style="max-width: 640px; margin: 0 auto;">A selection of recent welding and fabrication work. Click any image to enlarge.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    {% if items %}
+    <div class="gallery-grid">
+      {% for g in items %}
+      <div class="gallery-item reveal">
+        <img src="{{ url_for('static', filename=g.image) }}" alt="{{ g.title }}" loading="lazy">
+        <div class="gallery-cap">
+          <strong>{{ g.title }}</strong>
+          {% if g.caption %}<div class="muted-small">{{ g.caption }}</div>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted" style="text-align: center;">No gallery items yet. Check back soon.</p>
+    {% endif %}
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">×</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+{% endblock %}

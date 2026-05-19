@@ -1,0 +1,91 @@
+{% extends "admin/_base.html" %}
+{% block title %}Settings · Admin{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="margin: 0;">Site Settings</h1>
+    <p class="muted-small">Edit your business info — changes appear everywhere instantly.</p>
+  </div>
+</div>
+
+<form method="POST" class="form-card" style="max-width: 100%;">
+  <h3 style="margin-top: 0;">Branding & Hero</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Business Name</label>
+      <input name="s_business_name" value="{{ settings.business_name }}">
+    </div>
+    <div class="form-group">
+      <label>Tagline</label>
+      <input name="s_tagline" value="{{ settings.tagline }}">
+    </div>
+    <div class="form-group full">
+      <label>Hero Title</label>
+      <input name="s_hero_title" value="{{ settings.hero_title }}">
+    </div>
+    <div class="form-group full">
+      <label>Hero Subtitle</label>
+      <textarea name="s_hero_subtitle">{{ settings.hero_subtitle }}</textarea>
+    </div>
+    <div class="form-group full">
+      <label>About Text</label>
+      <textarea name="s_about_text" style="min-height: 160px;">{{ settings.about_text }}</textarea>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2rem;">Contact Info</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Phone</label>
+      <input name="s_phone" value="{{ settings.phone }}">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="s_email" value="{{ settings.email }}">
+    </div>
+    <div class="form-group full">
+      <label>Address</label>
+      <input name="s_address" value="{{ settings.address }}">
+    </div>
+    <div class="form-group full">
+      <label>Hours</label>
+      <input name="s_hours" value="{{ settings.hours }}">
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2rem;">Stats (shown in the counter strip)</h3>
+  <div class="form-grid">
+    <div class="form-group"><label>Service Radius (mi)</label><input name="s_service_radius_miles" value="{{ settings.service_radius_miles }}"></div>
+    <div class="form-group"><label>Avg Response Time</label><input name="s_response_time" value="{{ settings.response_time }}" placeholder="90 min"></div>
+    <div class="form-group"><label>Jobs Completed</label><input name="s_projects_completed" value="{{ settings.projects_completed }}"></div>
+    <div class="form-group"><label>Happy Clients</label><input name="s_happy_clients" value="{{ settings.happy_clients }}"></div>
+    <div class="form-group"><label>Average Rating</label><input name="s_rating" value="{{ settings.rating }}" placeholder="5.0"></div>
+  </div>
+
+  <h3 style="margin-top: 2rem;">Social Links</h3>
+  <div class="form-grid">
+    <div class="form-group"><label>Instagram URL</label><input name="s_instagram_url" value="{{ settings.instagram_url }}"></div>
+    <div class="form-group"><label>Facebook URL</label><input name="s_facebook_url" value="{{ settings.facebook_url }}"></div>
+  </div>
+
+  <button type="submit" class="btn" style="margin-top: 1.5rem;">Save Settings</button>
+</form>
+
+<form method="POST" action="{{ url_for('admin_password') }}" class="form-card" style="margin-top: 2.5rem; max-width: 520px;">
+  <h3 style="margin-top: 0;">Change Admin Password</h3>
+  <div class="form-group">
+    <label>Current Password</label>
+    <input name="current" type="password" required>
+  </div>
+  <div class="form-group">
+    <label>New Password (min 8 chars)</label>
+    <input name="new" type="password" required minlength="8">
+  </div>
+  <div class="form-group">
+    <label>Confirm New Password</label>
+    <input name="confirm" type="password" required minlength="8">
+  </div>
+  <button type="submit" class="btn btn-outline">Update Password</button>
+</form>
+{% endblock %}

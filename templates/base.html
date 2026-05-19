@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{ settings.tagline }}">
+<meta name="theme-color" content="#0a0a0b">
+<title>{% block title %}{{ settings.business_name }}{% endblock %}</title>
+
+{# Set theme BEFORE first paint to avoid flash #}
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff6b1a' rx='18'/%3E%3Cpath d='M30 70 L50 25 L70 70 Z' fill='%23ffe6c4'/%3E%3C/svg%3E">
+{% block head_extra %}{% endblock %}
+</head>
+<body>
+
+{# ---- LOADING SCREEN ---- #}
+<div id="loader" class="loader">
+  <div class="loader-stage">
+    <svg class="loader-spark" viewBox="0 0 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="sparkGrad">
+          <stop offset="0%" stop-color="#fff4d6"/>
+          <stop offset="40%" stop-color="#ffb84d"/>
+          <stop offset="100%" stop-color="#ff6b1a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="50" fill="url(#sparkGrad)" class="loader-core"/>
+      {% for i in range(12) %}
+        <line x1="100" y1="100" x2="100" y2="20" stroke="#ff8a3a" stroke-width="2"
+              transform="rotate({{ i * 30 }} 100 100)" class="loader-ray" style="animation-delay: {{ i * 0.05 }}s"/>
+      {% endfor %}
+    </svg>
+    <div class="loader-text">{{ settings.business_name }}</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+</div>
+
+{# ---- NAVIGATION ---- #}
+<header class="nav">
+  <div class="nav-inner">
+    <a href="{{ url_for('home') }}" class="nav-brand">
+      <span class="brand-mark">◣</span>
+      <span class="brand-name">{{ settings.business_name }}</span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('services_page') }}">Services</a>
+      <a href="{{ url_for('gallery_page') }}">Gallery</a>
+      <a href="{{ url_for('about_page') }}">About</a>
+      <a href="{{ url_for('contact_page') }}" class="nav-cta">Get Quote</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+{# ---- FLASH MESSAGES ---- #}
+<div class="toast-stack" id="toastStack">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+      <div class="toast toast-{{ cat }}">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+</div>
+
+{# ---- CONTENT ---- #}
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+{# ---- FOOTER ---- #}
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <span class="brand-mark">◣</span>
+        <span>{{ settings.business_name }}</span>
+      </div>
+      <p class="muted">{{ settings.tagline }}</p>
+    </div>
+    <div class="footer-col">
+      <h4>Visit</h4>
+      <p class="muted">{{ settings.address }}</p>
+      <p class="muted">{{ settings.hours }}</p>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p><a href="tel:{{ settings.phone }}">{{ settings.phone }}</a></p>
+      <p><a href="mailto:{{ settings.email }}">{{ settings.email }}</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Links</h4>
+      <a href="{{ url_for('services_page') }}">Services</a>
+      <a href="{{ url_for('gallery_page') }}">Gallery</a>
+      <a href="{{ url_for('contact_page') }}">Get a Quote</a>
+      {% if is_admin %}
+        <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+      {% else %}
+        <a href="{{ url_for('admin_login') }}" class="muted-small">Admin</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© {{ current_year }} {{ settings.business_name }}. All rights reserved.</span>
+    <span class="muted">AWS D1.1 Certified · Insured · Bonded</span>
+  </div>
+</footer>
+
+{# ---- FLOATING CTA ---- #}
+<a href="{{ url_for('contact_page') }}" class="floating-cta" aria-label="Request a quote">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  <span>Get Quote</span>
+</a>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

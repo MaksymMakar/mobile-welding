@@ -1,0 +1,64 @@
+{% extends "admin/_base.html" %}
+{% block title %}Testimonials · Admin{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <h1 style="margin: 0;">Testimonials</h1>
+</div>
+
+<form method="POST" class="form-card" style="margin: 0 0 2.5rem; max-width: 100%;">
+  <h3 style="margin-top: 0;">Add Testimonial</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="author">Author *</label>
+      <input id="author" name="author" required>
+    </div>
+    <div class="form-group">
+      <label for="role">Role / Title</label>
+      <input id="role" name="role" placeholder="Restaurant Owner">
+    </div>
+    <div class="form-group">
+      <label for="rating">Rating</label>
+      <select id="rating" name="rating">
+        {% for n in [5, 4, 3, 2, 1] %}<option value="{{ n }}">{{ '★' * n }}{{ '☆' * (5 - n) }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>&nbsp;</label>
+    </div>
+    <div class="form-group full">
+      <label for="body">Quote *</label>
+      <textarea id="body" name="body" required></textarea>
+    </div>
+  </div>
+  <button type="submit" class="btn" style="margin-top: 1rem;">Add Testimonial</button>
+</form>
+
+{% if items %}
+<table>
+  <thead>
+    <tr><th>Author</th><th>Quote</th><th>Rating</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for t in items %}
+    <tr>
+      <td>
+        <strong>{{ t.author }}</strong>
+        {% if t.role %}<div class="muted-small">{{ t.role }}</div>{% endif %}
+      </td>
+      <td class="muted-small">{{ t.body[:140] }}{% if t.body|length > 140 %}…{% endif %}</td>
+      <td class="stars">{{ '★' * t.rating }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin_testimonial_delete', item_id=t.id) }}"
+              onsubmit="return confirm('Delete?')" style="margin: 0;">
+          <button class="btn btn-ghost" style="padding: .4rem .8rem; font-size: .75rem; color: var(--error);">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No testimonials yet.</p>
+{% endif %}
+{% endblock %}

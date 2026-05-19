@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Services · {{ settings.business_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Our craft</span>
+    <h1>Services</h1>
+    <p class="muted" style="max-width: 640px; margin: 0 auto;">From a single weld on a broken hinge to full structural fabrication — here is what we offer.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid-3">
+      {% for s in services %}
+      <a href="{{ url_for('service_detail', slug=s.slug) }}" class="service-card reveal" style="color: inherit; display: block;">
+        <div class="service-icon">{{ icon(s.icon) }}</div>
+        <h3>{{ s.title }}</h3>
+        <p class="muted">{{ s.short_desc }}</p>
+        {% if s.price_from %}<div class="price-tag">{{ s.price_from }}</div>{% endif %}
+        <div style="margin-top: 1rem; color: var(--primary); font-size: .85rem; letter-spacing: .1em; text-transform: uppercase;">Learn more →</div>
+      </a>
+      {% else %}
+      <p class="muted">No services listed yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container">
+    <h2>Need something not listed?</h2>
+    <p class="muted" style="max-width: 540px; margin: 0 auto 2rem;">If you can sketch it, we can build it. Send us a description and we'll quote it.</p>
+    <a href="{{ url_for('contact_page') }}" class="btn">Talk to a Welder →</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "admin/_base.html" %}
+{% block title %}FAQs · Admin{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <h1 style="margin: 0;">FAQs</h1>
+</div>
+
+<form method="POST" class="form-card" style="margin: 0 0 2.5rem; max-width: 100%;">
+  <h3 style="margin-top: 0;">Add FAQ</h3>
+  <div class="form-grid">
+    <div class="form-group full">
+      <label for="question">Question *</label>
+      <input id="question" name="question" required>
+    </div>
+    <div class="form-group full">
+      <label for="answer">Answer *</label>
+      <textarea id="answer" name="answer" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="sort_order">Sort Order</label>
+      <input id="sort_order" name="sort_order" type="number" value="0">
+    </div>
+  </div>
+  <button type="submit" class="btn" style="margin-top: 1rem;">Add FAQ</button>
+</form>
+
+{% if items %}
+<table>
+  <thead><tr><th>Order</th><th>Question</th><th>Answer</th><th></th></tr></thead>
+  <tbody>
+    {% for f in items %}
+    <tr>
+      <td class="muted-small">{{ f.sort_order }}</td>
+      <td><strong>{{ f.question }}</strong></td>
+      <td class="muted-small">{{ f.answer[:140] }}{% if f.answer|length > 140 %}…{% endif %}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin_faq_delete', item_id=f.id) }}"
+              onsubmit="return confirm('Delete?')" style="margin: 0;">
+          <button class="btn btn-ghost" style="padding: .4rem .8rem; font-size: .75rem; color: var(--error);">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No FAQs yet.</p>
+{% endif %}
+{% endblock %}

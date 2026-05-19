@@ -1,0 +1,56 @@
+{% extends "admin/_base.html" %}
+{% block title %}Gallery · Admin{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <h1 style="margin: 0;">Gallery</h1>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="form-card" style="margin: 0 0 2.5rem; max-width: 100%;">
+  <h3 style="margin-top: 0;">Add Image</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input id="title" name="title" required placeholder="Stainless Prep Line">
+    </div>
+    <div class="form-group">
+      <label for="category">Category</label>
+      <input id="category" name="category" value="general" placeholder="general, structural, art…">
+    </div>
+    <div class="form-group full">
+      <label for="caption">Caption</label>
+      <input id="caption" name="caption" placeholder="Optional one-liner.">
+    </div>
+    <div class="form-group">
+      <label for="sort_order">Sort Order</label>
+      <input id="sort_order" name="sort_order" type="number" value="0">
+    </div>
+    <div class="form-group">
+      <label for="image">Image File *</label>
+      <input id="image" name="image" type="file" accept="image/*" required>
+    </div>
+  </div>
+  <button type="submit" class="btn" style="margin-top: 1rem;">Upload Image</button>
+</form>
+
+{% if items %}
+<div class="gallery-grid">
+  {% for g in items %}
+  <div class="gallery-item" style="cursor: default;">
+    <img src="{{ url_for('static', filename=g.image) }}" alt="{{ g.title }}">
+    <div class="gallery-cap">
+      <strong>{{ g.title }}</strong>
+      <div class="muted-small">{{ g.category }} · order {{ g.sort_order }}</div>
+    </div>
+    <form method="POST" action="{{ url_for('admin_gallery_delete', item_id=g.id) }}"
+          onsubmit="return confirm('Delete this image?')"
+          style="position: absolute; top: .5rem; right: .5rem; margin: 0;">
+      <button class="btn btn-danger" style="padding: .3rem .6rem; font-size: .7rem;">Delete</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="muted">No images yet — upload your first one above.</p>
+{% endif %}
+{% endblock %}

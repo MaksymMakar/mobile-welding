@@ -1,0 +1,66 @@
+{% extends "admin/_base.html" %}
+{% block title %}Admin Dashboard · {{ settings.business_name }}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="margin: 0;">Dashboard</h1>
+    <p class="muted-small">Welcome back, {{ session.username }}.</p>
+  </div>
+  <a href="{{ url_for('admin_service_form') }}" class="btn">+ Add Service</a>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-value">{{ counts.services }}</div>
+    <div class="kpi-label">Services</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">{{ counts.gallery }}</div>
+    <div class="kpi-label">Gallery Items</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">{{ counts.testimonials }}</div>
+    <div class="kpi-label">Testimonials</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">{{ counts.quotes_new }} <span style="color: var(--text-dim); font-size: 1.2rem;">/ {{ counts.quotes_total }}</span></div>
+    <div class="kpi-label">New Quotes</div>
+  </div>
+</div>
+
+<h3 style="margin-bottom: 1rem;">Recent Quote Requests</h3>
+{% if recent_quotes %}
+<table>
+  <thead>
+    <tr><th>Name</th><th>Service</th><th>Status</th><th>Received</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for q in recent_quotes %}
+    <tr>
+      <td>
+        <strong>{{ q.name }}</strong>
+        <div class="muted-small">{{ q.email }}</div>
+      </td>
+      <td>{{ q.service or '—' }}</td>
+      <td><span class="badge badge-{{ q.status }}">{{ q.status }}</span></td>
+      <td class="muted-small">{{ q.created_at[:16] }}</td>
+      <td><a href="{{ url_for('admin_quotes') }}" class="btn btn-ghost" style="padding: .4rem .8rem; font-size: .75rem;">View →</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No quote requests yet.</p>
+{% endif %}
+
+<div style="margin-top: 3rem;">
+  <h3>Quick Actions</h3>
+  <div style="display: flex; gap: .75rem; flex-wrap: wrap;">
+    <a href="{{ url_for('admin_service_form') }}" class="btn btn-outline">Add Service</a>
+    <a href="{{ url_for('admin_gallery') }}" class="btn btn-outline">Upload Photo</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="btn btn-outline">Add Testimonial</a>
+    <a href="{{ url_for('admin_settings') }}" class="btn btn-outline">Edit Site Info</a>
+  </div>
+</div>
+{% endblock %}

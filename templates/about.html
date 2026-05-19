@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}About · {{ settings.business_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="eyebrow">Who we are</span>
+    <h1>About {{ settings.business_name }}</h1>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="max-width: 820px;">
+    <div style="font-size: 1.15rem; line-height: 1.85; color: var(--text);">
+      {% for para in settings.about_text.split('\n\n') %}
+        <p>{{ para }}</p>
+      {% endfor %}
+    </div>
+
+    <div class="grid-2 reveal" style="margin-top: 4rem;">
+      <div class="service-card">
+        <h3>What We Stand For</h3>
+        <ul style="padding-left: 1.2rem; color: var(--text-muted); line-height: 2;">
+          <li>Every weld is signed by the lead welder.</li>
+          <li>Lifetime workmanship guarantee on structural joints.</li>
+          <li>Quotes returned within 4 business hours.</li>
+          <li>Fully insured to $2M general liability.</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <h3>On The Truck</h3>
+        <ul style="padding-left: 1.2rem; color: var(--text-muted); line-height: 2;">
+          <li>MIG, TIG & Stick — all processes ready</li>
+          <li>5kW generator — works anywhere</li>
+          <li>Plasma cutter for on-site shaping</li>
+          <li>Argon, CO₂ & mixed gas cylinders</li>
+          <li>Steel, stainless, aluminum stock</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats reveal">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card"><span class="stat-num" data-target="{{ settings.service_radius_miles }}">0</span><div class="stat-label">Mile Radius</div></div>
+      <div class="stat-card"><span class="stat-num">{{ settings.response_time }}</span><div class="stat-label">Avg Response</div></div>
+      <div class="stat-card"><span class="stat-num" data-target="{{ settings.projects_completed }}">0</span><div class="stat-label">Jobs Done</div></div>
+      <div class="stat-card"><span class="stat-num">★ {{ settings.rating }}</span><div class="stat-label">Rating</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container">
+    <h2>Meet us at the shop.</h2>
+    <p class="muted">{{ settings.address }} · {{ settings.hours }}</p>
+    <a href="{{ url_for('contact_page') }}" class="btn" style="margin-top: 1.5rem;">Plan a Visit →</a>
+  </div>
+</section>
+{% endblock %}

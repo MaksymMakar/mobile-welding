@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+welding.db
+static/uploads/*
+!static/uploads/.gitkeep
+.env
+.DS_Store
+.claude/
+.idea/
+.vscode/

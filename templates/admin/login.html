@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Admin Login · {{ settings.business_name }}{% endblock %}
+
+{% block content %}
+<div class="login-shell">
+  <form method="POST" class="login-card">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span class="brand-mark" style="font-size: 2.5rem;">◣</span>
+      <h2 style="margin-top: .5rem;">Admin Sign-In</h2>
+      <p class="muted-small">Manage services, gallery, quotes & settings</p>
+    </div>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input id="username" name="username" required autofocus autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn" style="width: 100%; justify-content: center;">Sign In →</button>
+    <p class="muted-small" style="margin-top: 1.5rem; text-align: center;">Default: admin / admin123 — change after first login.</p>
+  </form>
+</div>
+{% endblock %}

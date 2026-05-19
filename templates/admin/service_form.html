@@ -1,0 +1,67 @@
+{% extends "admin/_base.html" %}
+{% block title %}{{ 'Edit' if item else 'New' }} Service · Admin{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="margin: 0;">{{ 'Edit Service' if item else 'New Service' }}</h1>
+    <p class="muted-small">{{ 'Update the details below.' if item else 'Fill in the details — it goes live as soon as you save.' }}</p>
+  </div>
+  <a href="{{ url_for('admin_services') }}" class="btn btn-ghost">← Back</a>
+</div>
+
+<form method="POST" enctype="multipart/form-data" style="max-width: 820px;">
+  <div class="form-grid">
+    <div class="form-group full">
+      <label for="title">Title *</label>
+      <input id="title" name="title" required value="{{ item.title if item else '' }}" placeholder="e.g. MIG Welding">
+    </div>
+    <div class="form-group full">
+      <label for="short_desc">Short Description *</label>
+      <input id="short_desc" name="short_desc" required maxlength="160"
+             value="{{ item.short_desc if item else '' }}"
+             placeholder="One sentence summary shown on the services grid.">
+    </div>
+    <div class="form-group full">
+      <label for="long_desc">Long Description</label>
+      <textarea id="long_desc" name="long_desc" placeholder="Full description shown on the service detail page. Blank lines create paragraphs.">{{ item.long_desc if item else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="icon">Icon</label>
+      <select id="icon" name="icon">
+        {% for ic in icons %}
+        <option value="{{ ic }}" {% if item and item.icon == ic %}selected{% endif %}>{{ ic }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="price_from">Price From (display text)</label>
+      <input id="price_from" name="price_from" value="{{ item.price_from if item else '' }}" placeholder="from $85/hr">
+    </div>
+    <div class="form-group">
+      <label for="sort_order">Sort Order (lower = first)</label>
+      <input id="sort_order" name="sort_order" type="number" value="{{ item.sort_order if item else 0 }}">
+    </div>
+    <div class="form-group">
+      <label>&nbsp;</label>
+      <label style="display: flex; align-items: center; gap: .6rem; padding-top: .85rem; text-transform: none; letter-spacing: 0; font-size: .95rem; color: var(--text);">
+        <input type="checkbox" name="is_active" style="width: auto;" {% if not item or item.is_active %}checked{% endif %}>
+        Visible on public site
+      </label>
+    </div>
+    <div class="form-group full">
+      <label for="image">Image {% if item and item.image %}(replace optional){% endif %}</label>
+      <input id="image" name="image" type="file" accept="image/*">
+      {% if item and item.image %}
+        <div style="margin-top: 1rem;">
+          <img src="{{ url_for('static', filename=item.image) }}" alt="" style="max-width: 240px; border: 1px solid var(--border);">
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+    <button type="submit" class="btn">{{ 'Save Changes' if item else 'Create Service' }}</button>
+    <a href="{{ url_for('admin_services') }}" class="btn btn-ghost">Cancel</a>
+  </div>
+</form>
+{% endblock %}

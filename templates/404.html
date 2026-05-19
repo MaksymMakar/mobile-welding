@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found · {{ settings.business_name }}{% endblock %}
+{% block content %}
+<section class="page-head" style="border-bottom: 0; padding-bottom: 6rem;">
+  <div class="container" style="text-align: center;">
+    <div style="font-family: 'Rajdhani', sans-serif; font-size: 8rem; font-weight: 700; color: var(--primary); line-height: 1; text-shadow: 0 0 40px var(--primary-glow);">404</div>
+    <h1>This Joint Doesn't Exist</h1>
+    <p class="muted" style="max-width: 540px; margin: 0 auto 2rem;">The page you're looking for got welded shut, moved, or never existed. Let's get you back on track.</p>
+    <a href="{{ url_for('home') }}" class="btn">← Back to Home</a>
+  </div>
+</section>
+{% endblock %}

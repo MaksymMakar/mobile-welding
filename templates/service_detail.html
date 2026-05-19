@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}{{ service.title }} · {{ settings.business_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <div class="service-icon" style="margin: 0 auto 1.5rem;">{{ icon(service.icon) }}</div>
+    <span class="eyebrow">Service</span>
+    <h1>{{ service.title }}</h1>
+    <p class="muted" style="max-width: 640px; margin: 0 auto;">{{ service.short_desc }}</p>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="max-width: 820px;">
+    {% if service.image %}
+      <img src="{{ url_for('static', filename=service.image) }}" alt="{{ service.title }}"
+           style="width: 100%; margin-bottom: 2.5rem; border: 1px solid var(--border);">
+    {% endif %}
+    {% if service.long_desc %}
+      <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text);">
+        {% for p in service.long_desc.split('\n\n') %}
+          <p>{{ p }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if service.price_from %}
+      <div class="price-tag" style="font-size: 1.1rem; margin: 2rem 0;">Starting {{ service.price_from }}</div>
+    {% endif %}
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+      <a href="{{ url_for('contact_page') }}" class="btn">Request Quote →</a>
+      <a href="{{ url_for('services_page') }}" class="btn btn-outline">← All Services</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

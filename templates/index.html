@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}{{ settings.business_name }} — {{ settings.tagline }}{% endblock %}
+
+{% block content %}
+
+{# ============ HERO ============ #}
+<section class="hero">
+  <div class="sparks"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Est. 1998 · AWS Certified · Insured</span>
+        <h1>
+          <span class="line">Custom Welding</span>
+          <span class="line stroke-text">& Metal</span>
+          <span class="line"><span class="accent">Fabrication.</span></span>
+        </h1>
+        <p class="hero-sub">{{ settings.hero_subtitle }}</p>
+        <div class="hero-ctas">
+          <a href="{{ url_for('contact_page') }}" class="btn">Get a Free Quote →</a>
+          <a href="{{ url_for('services_page') }}" class="btn btn-outline">Explore Services</a>
+        </div>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <div class="num">{{ settings.service_radius_miles }}<span style="font-size: 1rem;">mi</span></div>
+            <div class="lbl">Service Radius</div>
+          </div>
+          <div class="hero-meta-item">
+            <div class="num">{{ settings.response_time }}</div>
+            <div class="lbl">Avg Response</div>
+          </div>
+          <div class="hero-meta-item">
+            <div class="num">★ {{ settings.rating }}</div>
+            <div class="lbl">Avg Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-ring"></div>
+        <div class="hero-ring-2"></div>
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="metal-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"  stop-color="#ff9d4d"/>
+              <stop offset="50%" stop-color="#ff7a1a"/>
+              <stop offset="100%" stop-color="#b34708"/>
+            </linearGradient>
+            <linearGradient id="anvil-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"  stop-color="#2a2f3a"/>
+              <stop offset="100%" stop-color="#0c0e14"/>
+            </linearGradient>
+            <radialGradient id="hot-glow">
+              <stop offset="0%" stop-color="#fff4d6" stop-opacity="1"/>
+              <stop offset="40%" stop-color="#ffd454" stop-opacity=".8"/>
+              <stop offset="100%" stop-color="#ff7a1a" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="soft-glow">
+              <feGaussianBlur stdDeviation="6" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          {# Background ring #}
+          <circle cx="250" cy="250" r="200" fill="none" stroke="url(#metal-grad)" stroke-width="1" stroke-dasharray="2 6" opacity=".35"/>
+
+          {# Anvil base #}
+          <g transform="translate(250, 360)">
+            <rect x="-110" y="0" width="220" height="22" fill="url(#anvil-grad)" stroke="#1a1d27" stroke-width="1"/>
+            <rect x="-90" y="-12" width="180" height="14" fill="#1d2230"/>
+            <path d="M -130 -12 L -100 -45 L 100 -45 L 130 -12 Z"
+                  fill="url(#anvil-grad)" stroke="#2a2f3a" stroke-width="1"/>
+            <rect x="-100" y="-45" width="200" height="4" fill="#3a414f"/>
+          </g>
+
+          {# Hot metal piece on anvil #}
+          <g transform="translate(250, 315)">
+            <ellipse cx="0" cy="0" rx="90" ry="60" fill="url(#hot-glow)" opacity=".7">
+              <animate attributeName="opacity" values=".5;.9;.5" dur="1.6s" repeatCount="indefinite"/>
+            </ellipse>
+            <rect x="-65" y="-6" width="130" height="12" rx="2" fill="url(#metal-grad)" filter="url(#soft-glow)"/>
+            <rect x="-65" y="-6" width="130" height="3" fill="#fff4d6" opacity=".7"/>
+          </g>
+
+          {# Welding arc & helmet #}
+          <g transform="translate(250, 180)">
+            {# Helmet #}
+            <path d="M -75 -55 Q -75 -100 0 -100 Q 75 -100 75 -55 L 75 30 Q 75 75 0 75 Q -75 75 -75 30 Z"
+                  fill="url(#anvil-grad)" stroke="#3a414f" stroke-width="1.5"/>
+            {# Visor #}
+            <rect x="-55" y="-30" width="110" height="36" rx="3" fill="#0c0e14" stroke="#ffd454" stroke-width="1.5"/>
+            <rect x="-50" y="-26" width="100" height="4" fill="#ff7a1a" opacity=".6">
+              <animate attributeName="opacity" values=".3;.9;.3" dur="0.8s" repeatCount="indefinite"/>
+            </rect>
+            {# Top vent #}
+            <rect x="-30" y="-95" width="60" height="6" fill="#1d2230"/>
+            <rect x="-40" y="-90" width="80" height="4" fill="#1d2230"/>
+          </g>
+
+          {# Welding arc light from helmet to metal #}
+          <g opacity=".9">
+            <circle cx="250" cy="280" r="35" fill="url(#hot-glow)">
+              <animate attributeName="r" values="28;40;28" dur="0.6s" repeatCount="indefinite"/>
+            </circle>
+            <path d="M 250 245 L 248 280 L 252 280 Z" fill="#fff4d6">
+              <animate attributeName="opacity" values=".6;1;.6" dur="0.3s" repeatCount="indefinite"/>
+            </path>
+          </g>
+
+          {# Sparks flying out #}
+          <g>
+            {% for i in range(8) %}
+            <circle cx="250" cy="280" r="2" fill="#ffd454" opacity="0">
+              <animate attributeName="cx" from="250" to="{{ 250 + ((i * 47) % 200) - 100 }}" dur="1.2s" begin="{{ (i * 0.15) }}s" repeatCount="indefinite"/>
+              <animate attributeName="cy" from="280" to="{{ 380 + ((i * 13) % 50) }}" dur="1.2s" begin="{{ (i * 0.15) }}s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.2s" begin="{{ (i * 0.15) }}s" repeatCount="indefinite"/>
+              <animate attributeName="r" values="3;1;0" dur="1.2s" begin="{{ (i * 0.15) }}s" repeatCount="indefinite"/>
+            </circle>
+            {% endfor %}
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ MARQUEE ============ #}
+<div class="marquee">
+  <div class="marquee-track">
+    <span>AWS D1.1 Structural</span>
+    <span>AWS D1.2 Aluminum</span>
+    <span>ASME Section IX</span>
+    <span>API 1104 Pipeline</span>
+    <span>MIG · TIG · Stick</span>
+    <span>Mobile 24/7</span>
+    <span>Lifetime Warranty</span>
+    <span>$2M Liability Insured</span>
+    {# duplicate for seamless loop #}
+    <span>AWS D1.1 Structural</span>
+    <span>AWS D1.2 Aluminum</span>
+    <span>ASME Section IX</span>
+    <span>API 1104 Pipeline</span>
+    <span>MIG · TIG · Stick</span>
+    <span>Mobile 24/7</span>
+    <span>Lifetime Warranty</span>
+    <span>$2M Liability Insured</span>
+  </div>
+</div>
+
+{# ============ STATS ============ #}
+<section class="stats reveal">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num" data-target="{{ settings.service_radius_miles }}">0</span>
+        <div class="stat-label">Mile Service Radius</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">{{ settings.response_time }}</span>
+        <div class="stat-label">Avg Response Time</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" data-target="{{ settings.projects_completed }}">0</span>
+        <div class="stat-label">Jobs Completed</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">★ {{ settings.rating }}</span>
+        <div class="stat-label">Average Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ SERVICES ============ #}
+<section class="reveal">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">01 · What we do</div>
+      <h2>Welding Done Right.</h2>
+      <p class="muted" style="max-width: 600px; margin: 0 auto;">Six core services, one set of standards. Every joint hand-finished, every project signed by the lead welder.</p>
+    </div>
+    <div class="grid-3">
+      {% for s in services %}
+      <div class="service-card">
+        <div class="service-icon">{{ icon(s.icon) }}</div>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.short_desc }}</p>
+        {% if s.price_from %}<div class="price-tag">◣ {{ s.price_from }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <div style="text-align:center; margin-top: 3rem;">
+      <a href="{{ url_for('services_page') }}" class="btn btn-outline">All Services →</a>
+    </div>
+  </div>
+</section>
+
+{# ============ PROCESS ============ #}
+<section class="process reveal" style="background: linear-gradient(180deg, var(--bg), var(--surface), var(--bg)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">02 · How we work</div>
+      <h2>From Sketch To Shop Floor.</h2>
+      <p class="muted" style="max-width: 600px; margin: 0 auto;">A simple process built on clear communication and zero surprises.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step">
+        <div class="process-node"><span class="process-num">01</span></div>
+        <h3>Brief</h3>
+        <p>Send us a sketch, photo, or CAD file. Phone, email, or text — whatever works.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-node"><span class="process-num">02</span></div>
+        <h3>Quote</h3>
+        <p>Written estimate back within 4 business hours. No hidden fees, no surprises.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-node"><span class="process-num">03</span></div>
+        <h3>Build</h3>
+        <p>We cut, weld, and finish in our shop or on-site. You get progress photos.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-node"><span class="process-num">04</span></div>
+        <h3>Deliver</h3>
+        <p>Installed, signed, and guaranteed for life. We don't leave until you're happy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ GALLERY PREVIEW ============ #}
+<section class="reveal">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">03 · Recent work</div>
+      <h2>From The <span class="gradient-text">Shop Floor.</span></h2>
+    </div>
+    {% if gallery %}
+    <div class="gallery-grid">
+      {% for g in gallery %}
+      <div class="gallery-item">
+        <img src="{{ url_for('static', filename=g.image) }}" alt="{{ g.title }}" loading="lazy">
+        <div class="gallery-cap"><strong>{{ g.title }}</strong></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="gallery-grid">
+      {% for _ in range(6) %}<div class="gallery-item placeholder"></div>{% endfor %}
+    </div>
+    <p class="muted" style="text-align: center; margin-top: 2rem;">Upload images via the admin panel to fill this gallery.</p>
+    {% endif %}
+    <div style="text-align:center; margin-top: 3rem;">
+      <a href="{{ url_for('gallery_page') }}" class="btn btn-outline">Full Gallery →</a>
+    </div>
+  </div>
+</section>
+
+{# ============ TESTIMONIALS ============ #}
+{% if testimonials %}
+<section class="reveal" style="background: linear-gradient(180deg, var(--bg), var(--surface)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">04 · Word of mouth</div>
+      <h2>What Clients Say.</h2>
+    </div>
+    <div class="grid-3">
+      {% for t in testimonials[:3] %}
+      <div class="testimonial-card">
+        <div class="stars">{{ '★' * t.rating }}{{ '☆' * (5 - t.rating) }}</div>
+        <p class="testimonial-body">{{ t.body }}</p>
+        <div class="testimonial-foot">
+          <div class="testimonial-avatar">{{ t.author.split()[0][0] }}{{ t.author.split()[-1][0] if t.author.split()|length > 1 else '' }}</div>
+          <div>
+            <div class="testimonial-author">{{ t.author }}</div>
+            {% if t.role %}<div class="testimonial-role">{{ t.role }}</div>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============ FAQ ============ #}
+{% if faqs %}
+<section class="reveal">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-num">05 · FAQ</div>
+      <h2>Common Questions.</h2>
+    </div>
+    <div class="faq-list">
+      {% for f in faqs %}
+      <details class="faq-item">
+        <summary class="faq-question">
+          {{ f.question }}
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-answer">{{ f.answer }}</div>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============ CTA STRIP ============ #}
+<section class="cta-strip reveal">
+  <div class="container">
+    <div class="section-num">06 · Ready when you are</div>
+    <h2>Let's Build Something <span class="gradient-text">That Lasts.</span></h2>
+    <p class="muted" style="max-width: 600px; margin: 0 auto 2.5rem; font-size: 1.1rem;">Send us a sketch, a photo, or a CAD file. Most quotes come back within 4 business hours.</p>
+    <a href="{{ url_for('contact_page') }}" class="btn">Request Your Quote →</a>
+  </div>
+</section>
+
+{% endblock %}
